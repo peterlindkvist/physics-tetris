@@ -1,0 +1,42 @@
+package tetris.physic
+{
+	import Box2D.Collision.b2AABB;
+	import Box2D.Dynamics.b2World;
+	import Box2D.Common.Math.b2Vec2;
+	import flash.display.Sprite;
+	import Box2D.Collision.Shapes.b2BoxDef;
+	import Box2D.Dynamics.b2BodyDef;
+	
+	public class BoxBase extends b2BodyDef
+	{
+		private var world:b2World;
+		private var doSleep:Boolean = true;
+		private var containerSprite:Sprite;
+		
+		public function BoxBase(sprite:Sprite)
+		{
+			
+		}
+		
+		public function draw():void
+		{
+			var m_sprite:Sprite = Main.m_sprite;
+			
+			for (var s:b2Shape = GetShapeList(); s != null; s = s.GetNext())
+			{
+			
+				var poly:b2PolyShape = s as b2PolyShape;
+				var tV:b2Vec2 = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[0])); //0->i
+				m_sprite.graphics.lineStyle(1,0x123456,1);
+				m_sprite.graphics.moveTo(tV.x, tV.y);
+				
+				for (var i:int = 0; i < poly.m_vertexCount; ++i)
+				{
+					var v:b2Vec2 = b2Math.AddVV(poly.m_position, b2Math.b2MulMV(poly.m_R, poly.m_vertices[i]));
+					m_sprite.graphics.lineTo(v.x, v.y);
+				}
+				m_sprite.graphics.lineTo(tV.x, tV.y);
+			}
+		}
+	}
+}
